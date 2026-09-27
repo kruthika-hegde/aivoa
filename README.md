@@ -31,24 +31,24 @@ assignment, following the required stack: **React + Redux**, **FastAPI**,
 ## 2. Architecture
 
 ```
-┌────────────────────────────┐        ┌──────────────────────────────┐        ┌─────────────────────┐
-│   React + Redux (UI)        │  REST  │           FastAPI              │        │      PostgreSQL       │
-│  LogDeviationForm            │ ─────▶ │  /api/ai/extract                │        │   deviations table     │
-│  AIAssistantPanel             │ ◀───── │  /api/ai/extract-pdf            │ ─────▶ │  (+ AI audit trail)    │
-│  Redux slices:                 │        │  /api/ai/ask                      │        └─────────────────────┘
-│   deviationFormSlice, aiSlice   │        │  /api/deviations (CRUD)           │
-└────────────────────────────┘        └──────────────┬─────────────────┘
+┌────────────────────────────    ┐          ┌──────────────────────────────┐         ┌─────────────────────┐
+│   React + Redux (UI)           │  REST   │           FastAPI             │         |     PostgreSQL        │
+│  LogDeviationForm              │ ─────▶ │ /api/ai/extract                │         │   deviations table    │
+│  AIAssistantPanel              │ ◀───── │  /api/ai/extract-pdf           │ ─────▶ |  (+ AI audit trail)   │
+│  Redux slices:                 │         │  /api/ai/ask                   │         └─────────────────────┘
+│   deviationFormSlice, aiSlice  │         │  /api/deviations (CRUD)        │
+└────────────────────────────┘             └──────────────┬─────────────────┘
                                                         │
                                                         ▼
                                           ┌─────────────────────────────────┐
-                                          │        LangGraph workflow          │
-                                          │        extract_fields                │
-                                          │             ↓                        │
-                                          │        assess_severity               │
-                                          │             ↓                        │
-                                          │        finalize                       │
-                                          │  (each node calls Groq via              │
-                                          │   langchain-groq)                       │
+                                          │        LangGraph workflow       │
+                                          │        extract_fields           │
+                                          │             ↓                   │
+                                          │        assess_severity          │
+                                          │             ↓                   │
+                                          │        finalize                 │
+                                          │  (each node calls Groq via      │
+                                          │   langchain-groq)               │
                                           └─────────────────────────────────┘
 ```
 
